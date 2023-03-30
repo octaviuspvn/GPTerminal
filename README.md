@@ -9,14 +9,14 @@ An intelligent terminal that let you to use your operating system like talking t
 `
 - Background input:
 
-`
-INPUT:
+
+`INPUT:
 [BASH ]
 [LINUX]
 [ADMIN]
 [rename all files that ends with .js to .ts, also create a folder called "new typescript files" and move all recent rename files into it.]
-
 `
+
 
 - Bash code output:
 
