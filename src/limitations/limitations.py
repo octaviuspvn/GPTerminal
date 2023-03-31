@@ -1,10 +1,15 @@
-def main():
+def getInstructions():
     try:
         with open("./prompt_limitations.txt") as prompt_limit:
             indications = prompt_limit.readlines()
-            print(" ".join(indications))
-    except:
-        print("An error was ocurred, please verify that the prompt_limitations.txt exists.")
+            prompt_limit.close()
 
-if __name__ == "__main__":
-    main() 
+            return {
+                "status": 200,
+                "indications": " ".join(indications),
+            }
+    except:
+        return {
+            "status": 400,
+            "indications": None
+        }
