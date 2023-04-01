@@ -102,6 +102,9 @@ def promptDataToGPT(action_prompt: str, context)-> str:
                 else:
                         bash_code = bash_code.replace("#SHELL", "")
 
+                if re.search(r'#INVALID%', bash_code):
+                        print(f"{BRAND_SCHEMA} - The script code action is invalid.")
+                        return
 
                 print(f"{BRAND_SCHEMA} - The following bash code will execute: \n", bash_code)
 
