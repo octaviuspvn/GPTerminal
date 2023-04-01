@@ -18,23 +18,13 @@ DOCUMENTATION = {
 
 def specs() -> dict[str, str] or None:
     # Verify if OPEN_API_KEY is available
-    API_KEY = os.getenv('OPENAI_API_KEY')
-    MODEL = os.getenv('OPENAI_MODEL')
-    TEMPERATURE = os.getenv('OPENAI_TEMPERATURE')
-    MAX_TOKENS = os.getenv('OPENAI_MAX_TOKENS')
-
-    DATA_TO_SET = [API_KEY, MODEL, TEMPERATURE, MAX_TOKENS]
-    # run through DATA dictionary keys
-    for n, key in enumerate(DATA.keys()):
-        DATA[key] = DATA_TO_SET[n]
-        # if data is not provided via path, get it via cli flags.
-        if not DATA[key]:
-            DATA[key] = getArguments(key)
-            # if data still not provided, return error.
-            if not DATA[key]:
-                return None
-
-    DATA['os'] = platform.platform()
+    DATA['API_KEY'] = os.getenv('OPENAI_API_KEY')
+    DATA['MODEL'] = os.getenv('OPENAI_MODEL')
+    DATA['TEMPERATURE'] = float(os.getenv('TEMPERATURE'))
+    DATA['MAX_TOKENS'] = int(os.getenv('MAX_TOKENS'))
+    DATA['SCRIPT_LANG'] = 'bash'
+    DATA['OS'] = 'linux'
+    DATA['LEVEL'] = 'admin'
     # if all data is available
     return DATA
 
