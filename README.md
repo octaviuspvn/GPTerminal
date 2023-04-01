@@ -1,6 +1,11 @@
 # GPTerminal
 An intelligent terminal that let you to use your operating system like talking to your best friend.
 
+# LATEST VERSION: 4.0.0
+## ABSTRACT:
+- MORE CHEAPER, 5 TIMES MORE CHEAPER THAN BEFORE (DUE TO TOKEN OPTIMIZATION PROMPT AND RESPONSE).
+- MORE FASTER, DUE TO LESS DATA IN HTTP REQUEST.
+
 ## Examples:
 
 - CLI Prompt:
