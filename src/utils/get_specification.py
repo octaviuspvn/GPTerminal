@@ -1,7 +1,9 @@
-import os
+from os import getenv, path
+from platform import system
+
 import argparse
-import platform
-import errors
+
+from src.utils import errors
 
 from configparser import ConfigParser
 
@@ -17,11 +19,13 @@ DATA = {
 def specs() -> dict[str, str] or None:
 
     # Verify if OPEN_API_KEY is available
-    DATA['API_KEY'] = os.getenv('OPENAI_API_KEY')
-    
+    DATA['API_KEY'] = getenv('OPENAI_API_KEY')
+
+    file_path = path.abspath(path.join(path.dirname(__file__), "..", "settings", "settings.ini"))
+
     try:
         config = ConfigParser()
-        config.read("./settings/settings.ini")
+        config.read(file_path)
         
         # SETTINGS SECTION IS "DEFAULT"
         LOCATION = 'DEFAULT'
@@ -43,7 +47,7 @@ def specs() -> dict[str, str] or None:
         if enable_custom_os:
             DATA['OS'] = config.get('CUSTOM','OS')
         if not enable_custom_os:
-            DATA['OS'] = platform.system().upper()
+            DATA['OS'] = system().upper()
         else:
 
             valid_os = ['LINUX', 'WINDOWS', 'MAC']

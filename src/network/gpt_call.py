@@ -2,15 +2,17 @@ import openai
 import os 
 import subprocess
 import re
-from utils import errors
-from executor import execute_script
+from src.utils import errors
+from src.executor import execute_script as exe
 
 BRAND_SCHEMA = "[GPTerminal] -"
 
 def main():
 
+        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "settings", "prompt_limitations.txt"))
+
         try:
-                with open("./settings/prompt_limitations.txt", "r") as prompt_file:
+                with open(file_path, "r") as prompt_file:
                         prompt = prompt_file.readlines()
                         prompt_file.close()
                 return " ".join(prompt)
@@ -55,7 +57,7 @@ def promptDataToGPT(action_prompt: str, context)-> str:
                 if re.search(r'#INVALID%', bash_code):
                         errors.ErrorBadPrompt()
                 
-                execute_script.main(user_os, bash_code)
+                exe.main(user_os, bash_code)
 
 
         except Exception as error:
