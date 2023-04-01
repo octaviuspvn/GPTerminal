@@ -1,6 +1,11 @@
 import os
 import argparse
 import platform
+import errors
+
+from configparser import ConfigParser
+
+BRAND_SCHEMA = "\n[GPTerminal] -"
 
 DATA = {
     "API_KEY" : "",
@@ -9,43 +14,59 @@ DATA = {
     "MAX_TOKENS" : ""
 }
 
-DOCUMENTATION = {
-    "API_KEY" : "The Open AI API KEY for GPTerminal usage.",
-    "MODEL" : "The AI Model of Open AI models [default: text-davinci-003]",
-    "TEMPERATURE" : "The level of randomness that your script code contain [default: 0.8]",
-    "MAX_TOKENS" : "The quantity of max tokens use in this api call [default: 200]" 
-}
-
 def specs() -> dict[str, str] or None:
+
     # Verify if OPEN_API_KEY is available
     DATA['API_KEY'] = os.getenv('OPENAI_API_KEY')
-    DATA['MODEL'] = os.getenv('OPENAI_MODEL')
-    DATA['TEMPERATURE'] = float(os.getenv('TEMPERATURE'))
-    DATA['MAX_TOKENS'] = int(os.getenv('MAX_TOKENS'))
-    DATA['SCRIPT_LANG'] = 'bash'
-    DATA['OS'] = 'linux'
-    DATA['LEVEL'] = 'admin'
-    # if all data is available
-    return DATA
-
-def getArguments(argument_to_copy: str) -> str:
     
-    """
-    Get data values via CLI Flags.
+    try:
+        config = ConfigParser()
+        config.read("./settings/settings.ini")
+        
+        # SETTINGS SECTION IS "DEFAULT"
+        LOCATION = 'DEFAULT'
 
-    This is the last instance if the data isn't provided via environment path.
+        # IF THE USER ACTIVE THE CUSTOM MODE CHANGE THE LOCATION SECTION
+        if config.getboolean('CUSTOM', 'USE_CUSTOM') == True:
+            LOCATION = 'CUSTOM'
 
-    return: string
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument(f"-{argument_to_copy[0:2]}",argument_to_copy, help=DOCUMENTATION[argument_to_copy])
-    
-    args = parser.parse_args()
+        # GET USER SETTINGS FROM THE CONFIG INI
+        DATA['MODEL'] = config.get(LOCATION, 'MODEL').lower()
+        DATA['TEMPERATURE'] = config.getfloat(LOCATION, 'TEMPERATURE')
+        DATA['MAX_TOKENS'] = config.getint(LOCATION, 'MAX_TOKENS')
+        DATA['LEVEL'] = config.get(LOCATION, 'PERMISSION_LEVEL').lower()
+        DATA['SCRIPT_LANG'] = config.get(LOCATION, 'SCRIPT_LANG').lower()
+        DATA['RESPONSES'] = config.getint(LOCATION, 'NUMBER_OF_RESPONSES')
 
-    return args.argument_to_copy
+         # IF THE USER SETTINGS WANT TO SET ITS OWN OPERATING SYSTEM
+        enable_custom_os = config.getboolean('CUSTOM', 'CUSTOM_OS')
+        if enable_custom_os:
+            DATA['OS'] = config.get('CUSTOM','OS')
+        if not enable_custom_os:
+            DATA['OS'] = platform.system().upper()
+        else:
 
-    
+            valid_os = ['LINUX', 'WINDOWS', 'MAC']
+            custom_os = DATA['OS'].upper()
 
+            if custom_os in valid_os:
+                if not DATA['SCRIPT_LANG']:
+                    if custom_os in ['LINUX', 'MAC']:
+                        data['SCRIPT_LANG'] = 'BASH'
+                    else:
+                        data['SCRIPT_LANG'] = 'SHELL'
+            else:
+                errors.ConfigError('CUSTOM_OS', valid_os, errors.DOCUMENTATION['OS'])
 
+        for key, value in DATA.items():
+            if not value and key != 'API_KEY':
+                errors.ConfigError(key, "https://platform.openai.com/docs/api-reference/", errors.DOCUMENTATION[key])
 
-    
+        # THIS CONFIGS ARE VALIDATED VIA THE API ENDPOINT, ONLY WE ENSURE THAT IT CONTAINS A VALUE.
+        if not DATA['API_KEY']:
+            errors.ErrorAPIKEY()
+        
+        return DATA
+
+    except Exception as error:
+        print(str(error))
