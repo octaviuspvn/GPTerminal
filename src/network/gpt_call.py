@@ -31,7 +31,7 @@ def promptDataToGPT(action_prompt: str, context)-> str:
         max_tokens = context['MAX_TOKENS']
         temperature = context['TEMPERATURE']
         number_of_responses = context['RESPONSES']
-
+        explicit_mode = context['EXPLICIT_MODE']
         try:    
                 response = openai.Completion.create(
                                 model=model,
@@ -57,6 +57,25 @@ def promptDataToGPT(action_prompt: str, context)-> str:
                 if re.search(r'#INVALID%', bash_code):
                         errors.ErrorBadPrompt()
                 
+                print(f"""{BRAND_SCHEMA} - The following bash code will execute: \n{"*"*15}\n {bash_code} \n {"*"*15}""")
+
+                if explicit_mode:
+                        explanations_enabled = input(f"{BRAND_SCHEMA} Do you want an explanation of the above code? [Y/N]: ")
+                        if explanations_enabled.upper() == "Y":
+                                try:
+                                        explanation = openai.Completion.create(
+                                        model=model,
+                                        max_tokens=max_tokens,
+                                        temperature=temperature,
+                                        prompt=f"""
+                                        Please give me a brief and short explanations of the
+                                        following {script} code step by step enumerated:\n {bash_code}""",
+                                        n=number_of_responses
+                                        )
+                                        explanation_text = explanation.choices[0]['text']
+                                        print(f"""{BRAND_SCHEMA} Code Explanations: \n{"*"*15} {explanation_text} \n {"*"*15}""")
+                                except Exception as error:
+                                        print(error)
                 exe.main(user_os, bash_code)
 
 

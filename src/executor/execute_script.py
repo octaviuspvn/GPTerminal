@@ -3,8 +3,6 @@ import subprocess
 BRAND_SCHEMA = "[GPTerminal] -\n"
 
 def main(user_os: str, bash_code: str):
-    print(f"{BRAND_SCHEMA} - The following bash code will execute: \n", bash_code)
-
     try:
         OPTIONS = ["Y", "N"]
         execution = input(f"{BRAND_SCHEMA} - Do you want to execute the above code [Y/N]: ").upper()

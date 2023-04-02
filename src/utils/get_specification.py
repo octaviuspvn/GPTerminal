@@ -41,6 +41,7 @@ def specs() -> dict[str, str] or None:
         DATA['LEVEL'] = config.get(LOCATION, 'PERMISSION_LEVEL').lower()
         DATA['SCRIPT_LANG'] = config.get(LOCATION, 'SCRIPT_LANG').lower()
         DATA['RESPONSES'] = config.getint(LOCATION, 'NUMBER_OF_RESPONSES')
+        DATA['EXPLICIT_MODE'] = config.getboolean(LOCATION, 'EXPLICIT_MODE')
 
          # IF THE USER SETTINGS WANT TO SET ITS OWN OPERATING SYSTEM
         enable_custom_os = config.getboolean('CUSTOM', 'CUSTOM_OS')
