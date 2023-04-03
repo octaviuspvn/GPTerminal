@@ -22,4 +22,12 @@
 - Secure mode added by default
 
 # 4.5.0
-- Explanation mode added (Warning could be expensive due to the use of tokens).
+- Explanation mode added (Warning could be expensive due to the use of tokens)
+
+# 4.6.0
+- Bug fixes
+- Macros added (keyword shortcuts to write less and impact more)
+
+# 4.7.0
+- Bug fixes
+- Better user experience
