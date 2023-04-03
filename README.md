@@ -1,4 +1,4 @@
-![GPT TERMINAL IMAGE](GPTerminal\ banner.jpg)
+![GPT TERMINAL IMAGE](GPTerminal\ banner.png)
 An intelligent terminal that let you to use your operating system like talking to your best friend.
 
 ## Examples:
