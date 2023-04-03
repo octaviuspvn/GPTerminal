@@ -20,3 +20,6 @@
 - More precision in ChatGPT code responses
 - PenTesting in bash added
 - Secure mode added by default
+
+# 4.5.0
+- Explanation mode added (Warning could be expensive due to the use of tokens).

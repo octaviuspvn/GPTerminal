@@ -6,6 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from configparser import ConfigParser
 
 from utils import get_specification as gs
+from utils import search_for_macro as sfm
 from network import gpt_call as gpcall
 
 BRAND_SCHEMA = "[GPTerminal] -\n"
@@ -19,7 +20,11 @@ def main():
 
     prompt = " ".join(sys.argv[1:])
     if prompt:
-        gpcall.promptDataToGPT(prompt, DATA)
+        formatted_text = sfm.find_macro(prompt)
+        if len(formatted_text) > 1:
+            gpcall.promptDataToGPT(formatted_text, DATA)
+        else:
+            gpcall.promptDataToGPT(prompt, DATA)
     else:
         print(f"{BRAND_SCHEMA} Please provide an action to perform.")
     

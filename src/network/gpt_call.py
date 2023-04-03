@@ -38,11 +38,10 @@ def promptDataToGPT(action_prompt: str, context)-> str:
                                 max_tokens=max_tokens,
                                 temperature=temperature,
                                 prompt=f"""
-                                {guidance_prompt} \n
-                                [{script}]
+                                {guidance_prompt}\n%[{script}]
                                 [{user_os}]
                                 [{lvl}]
-                                [{action_prompt}]
+                                [{action_prompt}]%
                                 """,
                                 n=number_of_responses
                 )
