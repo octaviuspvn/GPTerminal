@@ -31,6 +31,6 @@ It uses Chat-GPT in the background.
 
 The prompt was perfectly refined to enhance operating system cli power.
 
-- Version: 4.6.0.
+- Version: 4.7.0.
 
 Release date: 01/04/2023.
