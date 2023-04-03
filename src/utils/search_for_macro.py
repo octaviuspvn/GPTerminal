@@ -24,7 +24,6 @@ def find_macro(text: str):
                 continue
         
         formatted_text = ""
-        print(words)
         for word in text.split():
             if word[-1] == "$":
                 try:

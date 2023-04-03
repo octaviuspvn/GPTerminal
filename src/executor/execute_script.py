@@ -2,12 +2,14 @@ import subprocess
 
 BRAND_SCHEMA = "[GPTerminal] -\n"
 
-def main(user_os: str, bash_code: str):
+def main(user_os: str, bash_code: str, execute_instantly: bool):
     try:
         OPTIONS = ["Y", "N"]
-        execution = input(f"{BRAND_SCHEMA} - Do you want to execute the above code [Y/N]: ").upper()
+        execution = ""
+        if not execute_instantly:
+                execution = input(f"{BRAND_SCHEMA} - Do you want to execute the above code [Y/N]: ").upper()
 
-        if execution == "Y":
+        if execution == "Y" or execute_instantly:
                 with open("gpterminal_script.sh", "w") as f:
                         f.write(bash_code)
                 if user_os == "WINDOWS":
@@ -16,6 +18,7 @@ def main(user_os: str, bash_code: str):
                 else:
                         subprocess.run(["bash", "gpterminal_script.sh"])
                         subprocess.run(["rm", "gpterminal_script.sh"])
+                print("\n")
 
         elif execution == "N":
                 print(f"{BRAND_SCHEMA} Bash code wasn't executed.")
