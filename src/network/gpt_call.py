@@ -46,20 +46,16 @@ def promptDataToGPT(action_prompt: str, context)-> str:
                 )
                 
                 bash_code = response.choices[0]['text']
-
-                if script == "bash":
-                        bash_code = bash_code.replace("#BASH", "")
-                else:
-                        bash_code = bash_code.replace("#SHELL", "")
                 
                 if re.search(r'#INVALID%', bash_code):
                         errors.ErrorBadPrompt()
   
-
                 print(f"""{BRAND_SCHEMA} - The following {script} code will execute: \n{"*"*15}\n {bash_code} \n {"*"*15}""")
 
                 option = input(f"{BRAND_SCHEMA} Do you want to Run [Y:Yes / N:No] / Explain [E]: ")
                 letter = option.upper()
+                is_python = script.lower()=="python"
+
                 if letter == "E":
                         try:
                                 explanation = openai.Completion.create(
@@ -73,13 +69,13 @@ def promptDataToGPT(action_prompt: str, context)-> str:
                                 )
                                 explanation_text = explanation.choices[0]['text']
                                 print(f"""{BRAND_SCHEMA} Code Explanations: \n{"*"*15} {explanation_text} \n {"*"*15}""")
-                                exe.main(user_os, bash_code, False)
+                                exe.main(user_os, bash_code, is_python, False)
                         except Exception as error:
                                 print(error)
                 elif letter == "N":
-                        return
-                else:
-                        exe.main(user_os, bash_code, True)
+                        return  
+                else:   
+                        exe.main(user_os, bash_code, is_python , True)
 
 
         except Exception as error:

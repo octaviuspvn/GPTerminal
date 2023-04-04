@@ -26,7 +26,8 @@ def specs() -> dict[str, str] or None:
         LOCATION = 'DEFAULT'
 
         # IF THE USER ACTIVE THE CUSTOM MODE CHANGE THE LOCATION SECTION
-        if config.getboolean('CUSTOM', 'USE_CUSTOM') == True:
+        USE_CUSTOM_SETTINGS = config.getboolean('CUSTOM', 'USE_CUSTOM')
+        if USE_CUSTOM_SETTINGS:
             LOCATION = 'CUSTOM'
 
         # GET USER SETTINGS FROM THE CONFIG INI
@@ -36,26 +37,28 @@ def specs() -> dict[str, str] or None:
         DATA['LEVEL'] = config.get(LOCATION, 'PERMISSION_LEVEL').lower()
         DATA['SCRIPT_LANG'] = config.get(LOCATION, 'SCRIPT_LANG').lower()
         DATA['RESPONSES'] = config.getint(LOCATION, 'NUMBER_OF_RESPONSES')
+        DATA['OS'] =  config.get(LOCATION, 'OS')
 
-         # IF THE USER SETTINGS WANT TO SET ITS OWN OPERATING SYSTEM
-        enable_custom_os = config.getboolean('CUSTOM', 'CUSTOM_OS')
-        if enable_custom_os:
-            DATA['OS'] = config.get('CUSTOM','OS')
-        if not enable_custom_os:
-            DATA['OS'] = system().upper()
-        else:
-
-            valid_os = ['LINUX', 'WINDOWS', 'MAC']
-            custom_os = DATA['OS'].upper()
-
-            if custom_os in valid_os:
-                if not DATA['SCRIPT_LANG']:
-                    if custom_os in ['LINUX', 'MAC']:
-                        data['SCRIPT_LANG'] = 'BASH'
-                    else:
-                        data['SCRIPT_LANG'] = 'SHELL'
+        if USE_CUSTOM_SETTINGS:
+            # IF THE USER SETTINGS WANT TO SET ITS OWN OPERATING SYSTEM
+            enable_custom_os = config.getboolean('CUSTOM', 'CUSTOM_OS')
+            if enable_custom_os:
+                DATA['OS'] = config.get('CUSTOM','OS')
+            if not enable_custom_os:
+                DATA['OS'] = system().upper()
             else:
-                errors.ConfigError('CUSTOM_OS', valid_os, errors.DOCUMENTATION['OS'])
+
+                valid_os = ['LINUX', 'WINDOWS', 'MAC']
+                custom_os = DATA['OS'].upper()
+
+                if custom_os in valid_os:
+                    if not DATA['SCRIPT_LANG']:
+                        if custom_os in ['LINUX', 'MAC']:
+                            data['SCRIPT_LANG'] = 'BASH'
+                        else:
+                            data['SCRIPT_LANG'] = 'SHELL'
+                else:
+                    errors.ConfigError('CUSTOM_OS', valid_os, errors.DOCUMENTATION['OS'])
 
         for key, value in DATA.items():
             if not value and key != 'API_KEY':
