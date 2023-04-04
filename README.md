@@ -2,6 +2,15 @@
 
 An intelligent terminal that let you to use your operating system like talking to your best friend.
 
+# HOW TO USE IT (ALPHA VERSION)
+- 1) Clone repository locally
+- 2) Find out main.py file inside repository, copy the path to execute from wherever you want.
+- 3) Execute that main.py file found in the previous step: python {PATH}/src/main.py ACTION_TO_EXECUTE
+
+- Example if the repository is in Downloads:
+`python3 home/username/downloads/GPTerminal/src/main.py sort all files in this folder via filesize, from lower to higher`
+
+
 ## Examples:
 
 - CLI Prompt:
