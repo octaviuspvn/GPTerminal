@@ -1,4 +1,8 @@
+[MIGRATING TO NEW PRODUCT CALLED COOPER] : https://github.com/octaviusp/COOPER/tree/main
+
 ![GPT TERMINAL IMAGE](https://github.com/octaviuspvn/GPTerminal/blob/main/GPTerminal%20banner.png)
+
+[MIGRATING TO NEW PRODUCT CALLED COOPER] : https://github.com/octaviusp/COOPER/tree/main
 
 An intelligent terminal that let you to use your operating system like talking to your best friend.
 
